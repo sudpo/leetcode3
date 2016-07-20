@@ -1,0 +1,78 @@
+算法1: 此算法存在很容易overflow 内存， 因为保存了很多无用的信息
+
+class HitCounter {
+    map<int, int> m_counter;
+public:
+    /** Initialize your data structure here. */
+    HitCounter() {
+
+    }
+
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    void hit(int timestamp) {
+        m_counter[timestamp]++;
+    }
+
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    int getHits(int timestamp) {
+        auto it = m_counter.upper_bound(timestamp - 300);
+        int result = 0;
+        for( ; it != m_counter.end(); ++it){
+            result += it->second;
+        }
+        return result;
+    }
+};
+
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
+
+算法2: 用两个数组代替map 实时更新去掉已经过时的信息
+
+class HitCounter {
+    vector<int> m_times;
+    vector<int> m_hits;
+public:
+    /** Initialize your data structure here. */
+    HitCounter() {
+        m_times.resize(300, 0);
+        m_hits.resize(300, 0);
+    }
+
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    void hit(int timestamp) {
+        int idx = timestamp % 300;
+        if(m_times[idx] != timestamp){
+            m_times[idx] = timestamp;
+            m_hits[idx] = 1;
+        }else{
+            m_hits[idx] ++;
+        }
+    }
+
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    int getHits(int timestamp) {
+        int res = 0;
+        for(int i = 0; i < 300; ++i){
+            if(timestamp - m_times[i] < 300){
+                res += m_hits[i];
+            }
+        }
+        return res;
+    }
+};
+
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
