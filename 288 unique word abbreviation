@@ -1,0 +1,47 @@
+class ValidWordAbbr {
+    unordered_map<string, int> m_map;
+    unordered_set<string> m_set;
+    string toAbbr(string word){
+        char first = word[0];
+        char last = word.back();
+        int num = word.size() -2;
+        string res = first + to_string(num) + last;
+        return res;
+    }
+public:
+    ValidWordAbbr(vector<string> &dictionary) {
+        for(int i = 0; i < dictionary.size(); ++i){
+            if(dictionary[i].size() > 1){
+                m_set.insert(dictionary[i]);
+                m_map[toAbbr(dictionary[i])]++;
+            }
+        }
+    }
+
+    bool isUnique(string word) {
+        int n = word.size();
+        if(n == 1){
+            return true;
+        }
+        string abbr = toAbbr(word);
+        if(m_map.find(abbr) == m_map.end()){
+            return true;
+        }else{
+            if(m_map[abbr] > 1){
+                return false;
+            }else{
+                if(m_set.find(word) != m_set.end()){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+    }
+};
+
+
+// Your ValidWordAbbr object will be instantiated and called as such:
+// ValidWordAbbr vwa(dictionary);
+// vwa.isUnique("hello");
+// vwa.isUnique("anotherWord");
