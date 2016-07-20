@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool canPermutePalindrome(string s) {
+        int n = s.size();
+        if(n < 2){
+            return true;
+        }
+        unordered_map<char, int> hash;
+        for(int i = 0; i < s.size(); ++i){
+            hash[s[i]]++;
+        }
+        int num_odd = 0;
+        for(auto it = hash.begin(); it != hash.end(); ++it){
+            if(it->second % 2 != 0){
+                num_odd++;
+            }
+        }
+        if(num_odd > 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+};
