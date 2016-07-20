@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<vector<int>> multiply(vector<vector<int>>& A, vector<vector<int>>& B) {
+        int rowA = A.size();
+        int colA = A[0].size();
+        int rowB = B.size();
+        int colB = B[0].size();
+        
+        vector<vector<int> > noneZeroA(rowA);
+        vector<vector<int> > noneZeroB(colB);
+        vector<vector<int> > result(rowA, vector<int> (colB, 0));
+        
+        for(int i = 0 ; i < rowA; ++i){
+            for(int j = 0; j < colA; ++j){
+                if(A[i][j] != 0){
+                    noneZeroA[i].push_back(j);
+                }
+            }
+        }
+        for(int j = 0; j < colB; ++j){
+            for(int i = 0; i < rowB; ++i){
+                if(B[i][j] != 0){
+                    noneZeroB[j].push_back(i);
+                }
+            }
+        }
+        
+        for(int i = 0; i < rowA; ++i){
+            for(int j = 0; j < colB; ++j){
+                int m = 0;
+                int n = 0;
+                while(m < noneZeroA[i].size() && n < noneZeroB[j].size()){
+                    int indexA = noneZeroA[i][m];
+                    int indexB = noneZeroB[j][n];
+                    if(indexA == indexB){
+                        result[i][j] += A[i][indexA] * B[indexB][j];
+                        n++;
+                        m++;
+                    }else if (indexA > indexB){
+                        n++;
+                    }else{
+                        m++;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+};
