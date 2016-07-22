@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isStrobogrammatic(string num) {
+        unordered_map<char, char> m_map;
+        m_map['0'] = '0';
+        m_map['6'] = '9';
+        m_map['9'] = '6';
+        m_map['1'] = '1';
+        m_map['8'] = '8';
+        int start = 0;
+        int end = num.size() - 1;
+        while(start <= end){
+            if(m_map.find(num[start]) == m_map.end() || m_map[num[start]] != num[end]){
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+};
