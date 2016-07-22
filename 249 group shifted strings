@@ -1,0 +1,28 @@
+class Solution {
+    string shift(string s){
+        string t;
+        int n = s.size();
+        for(int i = 1; i < n; ++i){
+            int diff = int(s[i] - s[i-1]);
+            if(diff < 0){
+                diff += 26;
+            }
+            t += to_string(diff) +',';
+        }
+        cout<<t<<endl;
+        return t;
+    }
+public:
+    vector<vector<string>> groupStrings(vector<string>& strings) {
+        unordered_map<string, vector<string> > m_map;
+        for(int i = 0; i < strings.size(); ++i){
+            m_map[shift(strings[i])].push_back(strings[i]);
+        }
+        vector<vector<string>> res;
+        for(auto it = m_map.begin(); it != m_map.end(); ++it){
+            sort(it->second.begin(), it->second.end());
+            res.push_back(it->second);
+        }
+        return res;
+    }
+};
