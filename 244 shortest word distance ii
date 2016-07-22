@@ -1,0 +1,20 @@
+class WordDistance {
+    unordered_map<string, vector<int> > m_map;
+public:
+    WordDistance(vector<string>& words) {
+        for(int i = 0; i < words.size(); ++i){
+            m_map[words[i]].push_back(i);
+        }
+    }
+
+    int shortest(string word1, string word2) {
+        int pos1 = 0;
+        int pos2 = 0;
+        int res = INT_MAX;
+        while(pos1 < m_map[word1].size() && pos2 < m_map[word2].size()){
+            res = min(res, abs(m_map[word1][pos1] - m_map[word2][pos2]));
+            m_map[word1][pos1] > m_map[word2][pos2] ? pos2++ : pos1++;
+        }
+        return res;
+    }
+};
