@@ -1,0 +1,53 @@
+class Solution {
+public:
+    bool isReflected(vector<pair<int, int>>& points) {
+        unordered_map<int, set<int> > m_map;
+        for(int i = 0; i < points.size(); ++i){
+            m_map[points[i].second].insert(points[i].first);
+        }
+        int line = 0;
+        for(auto it = m_map.begin(); it != m_map.end(); ++it){
+            vector<int> tmp(it->second.begin(), it->second.end());
+            if(it == m_map.begin()){
+                line = tmp[0] + tmp[tmp.size() - 1];
+            }
+            int start = 0;
+            int end = tmp.size() - 1;
+            while(start <= end){
+                int mid = tmp[start] + tmp[end];
+                if(mid != line){
+                    return false;
+                }
+                start++;
+                end--;
+            }
+        }
+        return true;
+    }
+};
+
+算法2:
+class Solution {
+public:
+    bool isReflected(vector<pair<int, int>>& points) {
+        int xmin = INT_MAX;
+        int xmax = INT_MIN;
+        unordered_map<int, unordered_set<int> > m_map;
+        for(int i = 0; i < points.size(); ++i){
+            xmin = min(points[i].first, xmin);
+            xmax = max(points[i].first, xmax);
+            m_map[points[i].first].insert(points[i].second);
+        }
+
+        int line = xmin + xmax;
+
+        for(int i = 0; i < points.size(); ++i){
+            int x = points[i].first;
+            int y = points[i].second;
+            if(m_map.find(line-x) == m_map.end() || m_map[line-x].find(y) == m_map[line-x].end()){
+                return false;
+            }
+        }
+        return true;
+    }
+};
