@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int shortestDistance(vector<string>& words, string word1, string word2) {
+        unordered_map<string, vector<int> > m_map;
+        for(int i = 0; i < words.size(); ++i){
+            m_map[words[i]].push_back(i);
+        }
+
+        vector<int> index1 = m_map[word1];
+        vector<int> index2 = m_map[word2];
+        int i1 = 0;
+        int i2 = 0;
+        int distance = INT_MAX;
+        while(i1 < index1.size() && i2 < index2.size()){
+            distance = min(distance, abs(index1[i1] - index2[i2]));
+            if(index1[i1] > index2[i2]){
+                i2++;
+            }else{
+                i1++;
+            }
+        }
+        return distance;
+    }
+};
+
+算法2： O(n)
+class Solution {
+public:
+    int shortestDistance(vector<string>& words, string word1, string word2) {
+        int pos1 = 0;
+        int pos2 = 0;
+        bool flag1 = false;
+        bool flag2 = false;
+        int result = INT_MAX;
+        for(int i = 0; i < words.size(); ++i){
+            if(words[i] == word1){
+                pos1 = i;
+                flag1 = true;
+            }
+            if(words[i] == word2){
+                pos2 = i;
+                flag2 = true;
+            }
+            if(flag1 && flag2){
+                result = min(result, abs(pos1 - pos2));
+            }
+        }
+        return result;
+    }
+};
