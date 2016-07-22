@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxSubArrayLen(vector<int>& nums, int k) {
+        if(nums.size() == 0){
+            return 0;
+        }
+        int res = 0;
+        unordered_map<int, int> m_map;
+        m_map[0] = 0;
+        nums.insert(nums.begin(), 0);
+        for(int i = 1; i < nums.size(); ++i){
+            nums[i] += nums[i-1];
+            if(m_map.find(nums[i] - k) != m_map.end()){
+                res = max(res, i - m_map[nums[i] - k]);
+            }
+            if(m_map.find(nums[i]) == m_map.end()){
+                m_map[nums[i]] = i;
+            }
+        }
+
+        return res;
+
+    }
+};
