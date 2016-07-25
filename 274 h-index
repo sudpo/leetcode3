@@ -1,0 +1,54 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        sort(citations.begin(), citations.end());
+        int hIdx = 0;
+        for(int i = citations.size()-1; i >= 0; --i){
+            if(citations[i] > hIdx){
+                hIdx++;
+            }else{
+                break;
+            }
+        }
+        return hIdx;
+    }
+};
+
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        sort(citations.begin(), citations.end());
+        int n = citations.size();
+        for(int i = 0; i < n; ++i){
+            if(citations[i] >= n-i){
+                return n-i;
+            }
+        }
+        return 0;
+    }
+};
+
+不sort 用MAP
+
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        map<int, int> c_map;
+        int n = citations.size();
+        for(int i = 0; i < n; ++i){
+            if(citations[i] > n){
+                c_map[n]++;
+            }else{
+                c_map[citations[i]]++;
+            }
+        }
+        int paper = 0;
+        for(int i = n; i >=0; --i){
+            paper += c_map[i];
+            if(paper >= i){
+                return i;
+            }
+        }
+        return 0;
+    }
+};
