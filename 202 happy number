@@ -1,0 +1,55 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        if( n == 1){
+            return true;
+        }
+        unordered_set<int> m_set;
+        int num = n;
+        m_set.insert(num);
+        while(num != 1){
+            int tmp = 0;
+            while(num > 0){
+                tmp += (num % 10) * (num % 10);
+                num /= 10;
+            }
+            if(tmp == 1){
+                return true;
+            }else{
+                if(m_set.find(tmp) != m_set.end()){
+                    return false;
+                }else{
+                    m_set.insert(tmp);
+                    num = tmp;
+                }
+            }
+        }
+        return false;
+    }
+};
+
+或者更简洁的写
+class Solution {
+    bool isHappy(int num, set<int> &occured){
+        if(num == 1) {
+            return true;
+        }
+        if(occured.find(num) != occured.end()){
+            return false;
+        }
+
+        occured.insert(num);
+        int newNum = 0;
+        while(num > 0){
+            newNum += (num % 10 ) * (num % 10);
+            num = num / 10;
+        }
+        return isHappy(newNum, occured);
+
+    }
+public:
+    bool isHappy(int n) {
+        set<int> occured;
+        return isHappy(n, occured);
+    }
+};
