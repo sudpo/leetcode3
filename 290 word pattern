@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string str) {
+        unordered_map<char, string> charToString;
+        unordered_map<string, char> stringToChar;
+        stringstream ss(str);
+        vector<string> vs;
+        string tmp;
+        while(getline(ss, tmp, ' ')){
+            vs.push_back(tmp);
+        }
+        if(vs.size() != pattern.size()){
+            return false;
+        }
+
+        for(int i = 0; i < pattern.size(); ++i){
+            if(charToString.find(pattern[i]) == charToString.end()){
+                charToString[pattern[i]] = vs[i];
+            }else{
+                if(charToString[pattern[i]] != vs[i]){
+                    return false;
+                }
+            }
+            if(stringToChar.find(vs[i]) == stringToChar.end()){
+                stringToChar[vs[i]] = pattern[i];
+            }else{
+                if(stringToChar[vs[i]] != pattern[i]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
