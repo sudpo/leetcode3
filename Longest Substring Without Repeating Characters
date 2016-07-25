@@ -1,0 +1,56 @@
+算法1: 用数组模拟map 速度最快
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> dict(256, -1);
+        int maxLen = 0, start = -1;
+        for (int i = 0; i != s.length(); i++) {
+            if (dict[s[i]] > start)
+                start = dict[s[i]];
+            dict[s[i]] = i;
+            maxLen = max(maxLen, i - start);
+        }
+        return maxLen;
+    }
+};
+
+算法2: 直接用map
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<int, int> m_map;
+        int res = 0;
+        int start = -1;
+        for(int i = 0; i < s.size(); ++i){
+            if(m_map.find(s[i]) != m_map.end()){
+                start = max(start,m_map[s[i]]);
+            }
+            m_map[s[i]] = i;
+            res = max(res, i - start);
+        }
+        return res;
+    }
+};
+
+算法3: 用set来模拟sliding window
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int start = 0;
+        unordered_set<char> m_set;
+        int res = 0;
+        for(int i = 0; i < s.size(); ++i){
+            if(m_set.find(s[i]) == m_set.end()){
+                m_set.insert(s[i]);
+                res = max(res, int(m_set.size()));
+            }else{
+                while(s[start] != s[i]){
+                    m_set.erase(s[start]);
+                    start++;
+                }
+                start++;
+            }
+        }
+        return res;
+    }
+};
