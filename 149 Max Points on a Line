@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maxPoints(vector<Point>& points) {
+        int n = points.size();
+        if(n < 3){
+            return n;
+        }
+
+        int res = 0;
+        for(int i = 0; i < n; ++i){
+            unordered_map<double, int> m_map;
+            int vertical = 0;
+            int horizontal = 0;
+            int samePoint = 1;
+            for(int j = i+1; j < n; ++j){
+                if(points[j].x == points[i].x && points[j].y == points[i].y){
+                    samePoint++;
+                }else if(points[j].x == points[i].x && points[j].y != points[i].y){
+                    vertical++;
+                }else if(points[j].x != points[i].x && points[j].y == points[i].y){
+                    horizontal++;
+                }else{
+                    double slope = double (points[j].y - points[i].y) / (points[j].x - points[i].x);
+                    m_map[slope]++;
+                }
+            }
+            int localMax = 0;
+            for(auto it = m_map.begin(); it != m_map.end(); ++it){
+                localMax = max(localMax, it->second);
+            }
+            localMax = max(localMax, vertical);
+            localMax = max(localMax, horizontal);
+            localMax += samePoint;
+            res = max(res, localMax);
+        }
+        return res;
+    }
+};
