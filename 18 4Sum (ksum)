@@ -1,0 +1,53 @@
+class Solution {
+    vector<vector<int> > kSum(vector<int> &nums, int startPos, int k, int target){
+        unordered_set<int> visited;
+        vector<vector<int> > tmpRes;
+        if(k == 2){
+            int start = startPos;
+            int end = nums.size() - 1;
+            while(start < end){
+                if(nums[start] + nums[end] == target){
+                    if(visited.find(nums[start]) == visited.end()){
+                        vector<int> tmp;
+                        tmp.push_back(nums[start]);
+                        tmp.push_back(nums[end]);
+                        visited.insert(nums[start]);
+                        tmpRes.push_back(tmp);
+                    }
+                    start++;
+                    end--;
+                }else if(nums[start] + nums[end] < target){
+                    start++;
+                }else{
+                    end--;
+                }
+            }
+            return tmpRes;
+        }else{
+            for(int i = startPos; i <= nums.size() - k; ++i){
+                if((target > 0 && nums[i] > target) || (target < 0 && nums[i] > 0) ){
+                    break;
+                }
+                if(visited.find(nums[i]) == visited.end()){
+                    visited.insert(nums[i]);
+                    vector<vector<int> > tmp = kSum(nums, i+1, k-1, target - nums[i]);
+                    for(int j = 0; j < tmp.size(); ++j){
+                        vector<int> &vec = tmp[j];
+                        vec.insert(vec.begin(), nums[i]);
+                        tmpRes.push_back(vec);
+                    }
+                }
+            }
+            return tmpRes;
+        }
+    }
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int> > res;
+        if(nums.size() < 4){
+            return res;
+        }
+        sort(nums.begin(), nums.end());
+        return kSum(nums, 0, 4, target);
+    }
+};
