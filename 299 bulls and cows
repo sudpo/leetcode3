@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int numBulls = 0;
+        unordered_map<char, int> count;
+        for(int i = 0; i< secret.size(); ++i){
+            if(secret[i] == guess[i]){
+                numBulls++;
+            }
+            count[secret[i]]++;
+        }
+        int numCows = 0;
+        for(int i = 0; i < guess.size(); ++i){
+            if(count.find(guess[i]) != count.end() && count[guess[i]] > 0){
+                numCows++;
+                count[guess[i]]--;
+            }
+        }
+        numCows -= numBulls;
+        string res = to_string(numBulls)+'A'+to_string(numCows)+'B';
+        return res;
+
+    }
+};
