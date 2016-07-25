@@ -1,0 +1,49 @@
+class Solution {
+    bool isPalindrome(string word){
+        int start = 0;
+        int end = word.size() - 1;
+        while(start < end){
+            if(word[start] != word[end]){
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+public:
+    vector<vector<int>> palindromePairs(vector<string>& words) {
+        vector<vector<int> > res;
+        unordered_map<string, int> m_map;
+        for(int i = 0; i < words.size(); ++i){
+            string tmp = words[i];
+            reverse(tmp.begin(), tmp.end());
+            m_map[tmp] = i;
+        }
+
+        if(m_map.find("") != m_map.end()){
+            for(int i = 0; i < words.size(); ++i){
+                if(isPalindrome(words[i])){
+                    if(i != m_map[""]){
+                        res.push_back({m_map[""], i});
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < words.size(); ++i){
+            string tmp = words[i];
+            for(int j = 0; j <tmp.size(); ++j){
+                string left = tmp.substr(0, j);
+                string right = tmp.substr(j);
+                if(m_map.find(left) != m_map.end() && isPalindrome(right) && m_map[left] != i){
+                    res.push_back({i, m_map[left]} );
+                }
+                if(m_map.find(right) != m_map.end() && isPalindrome(left) && m_map[right] != i){
+                    res.push_back({m_map[right], i});
+                }
+            }
+        }
+        return res;
+    }
+};
