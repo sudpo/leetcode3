@@ -1,0 +1,38 @@
+class Solution {
+    int transform(int num, int a, int b, int c){
+        return a * num * num + b * num + c;
+    }
+public:
+    vector<int> sortTransformedArray(vector<int>& nums, int a, int b, int c) {
+        vector<int> res(nums.size(), 0);
+        int start = 0;
+        int end = nums.size() - 1;
+
+        if(a > 0){
+            int index = end;
+            while(start <= end){
+                if(transform(nums[start], a, b, c) > transform(nums[end], a, b, c)){
+                    res[index] = transform(nums[start], a, b, c);
+                    start++;
+                }else{
+                    res[index] = transform(nums[end], a, b, c);
+                    end--;
+                }
+                index--;
+            }
+        }else{
+            int index = 0;
+            while(start <= end){
+                if(transform(nums[start], a, b, c) < transform(nums[end], a, b, c)){
+                    res[index] = transform(nums[start], a, b, c);
+                    start++;
+                }else{
+                    res[index] = transform(nums[end], a, b, c);
+                    end--;
+                }
+                index++;
+            }
+        }
+        return res;
+    }
+};
