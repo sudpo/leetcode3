@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int n = nums.size();
+        int start = 0;
+        int end = 0;
+        int sum = 0;
+        int res = INT_MAX;
+        while(end < n){
+            sum += nums[end];
+            while(sum >= s){
+                res = min(res, end - start + 1);
+                sum -= nums[start];
+                start++;
+            }
+            end++;
+        }
+        return res == INT_MAX ? 0 : res;
+
+    }
+};
+
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int n = nums.size();
+        if(n == 0){
+            return 0;
+        }
+
+        for(int i = 1; i < n; ++i){
+            nums[i] += nums[i-1];
+        }
+
+        nums.insert(nums.begin(), 0);
+        int res = INT_MAX;
+        for(int i = 1; i <= n; ++i){
+            if(nums[i] >= s){
+                auto p = upper_bound(nums.begin(), nums.begin() + i, nums[i]- s);
+                if(p != nums.end()){
+                    res = min(res, i - (int) (p - nums.begin()) + 1);
+                }
+            }
+        }
+        return res == INT_MAX ? 0 : res;
+    }
+};
