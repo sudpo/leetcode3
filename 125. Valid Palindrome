@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        int n = s.size();
+        if(n == 0){
+            return true;
+        }
+        int start = 0;
+        int end = n - 1;
+        while(start < end){
+            while(!isalnum(s[start]) && start < end){
+                start++;
+            }
+            while(!isalnum(s[end]) && start < end){
+                end--;
+            }
+            if(isalpha(s[start])){
+                s[start] = toupper(s[start]);
+            }
+            if(isalpha(s[end])){
+                s[end] = toupper(s[end]);
+            }
+            if(toupper(s[start]) != toupper(s[end])){
+                return false;
+            }else{
+                start++;
+                end--;
+            }
+        }
+        return true;
+    }
+};
